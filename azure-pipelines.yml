@@ -1,11 +1,11 @@
 trigger: none
 pool: ADO-agent
 stages:
-  - stage: Pipeline
+  - stage: Initialization
     displayName: Terraform Init
     jobs:
       - job: Init
-        displayName: Init
+        displayName: Terraform Init
         steps:
           - task: TerraformTask@5
             inputs:
@@ -16,3 +16,29 @@ stages:
               backendAzureRmStorageAccountName: 'itsisraningtoday2'
               backendAzureRmContainerName: 'container'
               backendAzureRmKey: 'terraform.tfstate'
+
+
+  - stage: Planning
+    displayName: Terraform Plan
+    jobs:
+      - job: Plan
+        displayName: Terraform Plan
+        steps:
+          - task: TerraformTask@5
+            inputs:
+              provider: 'azurerm'
+              command: 'plan'
+              environmentServiceNameAzureRM: 'Connection-SVC'
+
+
+  - stage: Applying
+    displayName: Terraform Apply
+    jobs:
+      - job: Apply
+        displayName: Terraform Apply
+        steps:
+          - task: TerraformTask@5
+            inputs:
+              provider: 'azurerm'
+              command: 'apply'
+              environmentServiceNameAzureRM: 'Connection-SVC'
