@@ -17,12 +17,6 @@ stages:
               backendAzureRmContainerName: 'container'
               backendAzureRmKey: 'terraform.tfstate'
 
-          - task: PublishPipelineArtifact@1
-            inputs:
-              targetPath: '$(Build.SourcesDirectory)'
-              artifact: 'terraform-init'
-              publishLocation: 'pipeline'
-
 
   - stage: Planning
     displayName: Terraform Plan
@@ -30,11 +24,15 @@ stages:
       - job: Plan
         displayName: Terraform Plan
         steps:
-          - task: DownloadPipelineArtifact@2
+          - task: TerraformTask@5
             inputs:
-              buildType: 'current'
-              artifactName: 'terraform-init'
-              targetPath: '(Pipeline.Workspace)/terraform'
+              provider: 'azurerm'
+              command: 'init'
+              backendServiceArm: 'Connection-SVC'
+              backendAzureRmResourceGroupName: 'umbrella'
+              backendAzureRmStorageAccountName: 'itsisraningtoday2'
+              backendAzureRmContainerName: 'container'
+              backendAzureRmKey: 'terraform.tfstate'
 
           - task: TerraformTask@5
             inputs:
@@ -43,14 +41,23 @@ stages:
               environmentServiceNameAzureRM: 'Connection-SVC'
 
 
-  # - stage: Applying
-  #   displayName: Terraform Apply
-  #   jobs:
-  #     - job: Apply
-  #       displayName: Terraform Apply
-  #       steps:
-  #         - task: TerraformTask@5
-  #           inputs:
-  #             provider: 'azurerm'
-  #             command: 'apply'
-  #             environmentServiceNameAzureRM: 'Connection-SVC'
+  - stage: Applying
+    displayName: Terraform Apply
+    jobs:
+      - job: Apply
+        displayName: Terraform Apply
+        steps:
+          - task: TerraformTask@5
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              backendServiceArm: 'Connection-SVC'
+              backendAzureRmResourceGroupName: 'umbrella'
+              backendAzureRmStorageAccountName: 'itsisraningtoday2'
+              backendAzureRmContainerName: 'container'
+              backendAzureRmKey: 'terraform.tfstate' 
+          - task: TerraformTask@5
+            inputs:
+              provider: 'azurerm'
+              command: 'apply'
+              environmentServiceNameAzureRM: 'Connection-SVC'
