@@ -17,6 +17,7 @@ stages:
               backendAzureRmContainerName: 'container'
               backendAzureRmKey: 'terraform.tfstate'
 
+          
 
   - stage: Planning
     displayName: Terraform Plan
@@ -24,6 +25,16 @@ stages:
       - job: Plan
         displayName: Terraform Plan
         steps:
+          - task: TerraformTask@5
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              backendServiceArm: 'Connection-SVC'
+              backendAzureRmResourceGroupName: 'umbrella'
+              backendAzureRmStorageAccountName: 'itsisraningtoday2'
+              backendAzureRmContainerName: 'container'
+              backendAzureRmKey: 'terraform.tfstate'
+
           - task: TerraformTask@5
             inputs:
               provider: 'azurerm'
@@ -37,6 +48,16 @@ stages:
       - job: Apply
         displayName: Terraform Apply
         steps:
+          - task: TerraformTask@5
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              backendServiceArm: 'Connection-SVC'
+              backendAzureRmResourceGroupName: 'umbrella'
+              backendAzureRmStorageAccountName: 'itsisraningtoday2'
+              backendAzureRmContainerName: 'container'
+              backendAzureRmKey: 'terraform.tfstate'
+              
           - task: TerraformTask@5
             inputs:
               provider: 'azurerm'
