@@ -24,23 +24,23 @@ stages:
               publishLocation: 'pipeline'
 
 
-  # - stage: Planning
-  #   displayName: Terraform Plan
-  #   jobs:
-  #     - job: Plan
-  #       displayName: Terraform Plan
-  #       steps:
-  #         - task: DownloadPipelineArtifact@2
-  #           inputs:
-  #             buildType: 'current'
-  #             artifactName: 'Init'
-  #             targetPath: '$(Pipeline.Workspace)'
+  - stage: Planning
+    displayName: Terraform Plan
+    jobs:
+      - job: Plan
+        displayName: Terraform Plan
+        steps:
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              buildType: 'current'
+              artifactName: 'Init'
+              targetPath: '$(Pipeline.Workspace)'
 
-  #         - task: TerraformTask@5
-  #           inputs:
-  #             provider: 'azurerm'
-  #             command: 'plan'
-  #             environmentServiceNameAzureRM: 'Connection-SVC'
+          - task: TerraformTask@5
+            inputs:
+              provider: 'azurerm'
+              command: 'plan'
+              environmentServiceNameAzureRM: 'Connection-SVC'
 
 
   # - stage: Applying
