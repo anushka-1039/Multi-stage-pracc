@@ -1,0 +1,18 @@
+trigger: none
+pool: ADO-agent
+stages:
+  - stage: Terraform Pipeline
+    displayName: Terraform Init
+    jobs:
+      - job: Init Job
+        displayName: Init
+        steps:
+          - task: TerraformTask@5
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              backendServiceArm: 'Connection-SVC'
+              backendAzureRmResourceGroupName: 'umbrella'
+              backendAzureRmStorageAccountName: 'itsisraningtoday2'
+              backendAzureRmContainerName: 'container'
+              backendAzureRmKey: 'terraform.tfstate'
