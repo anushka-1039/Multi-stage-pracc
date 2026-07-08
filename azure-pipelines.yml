@@ -17,49 +17,40 @@ stages:
               backendAzureRmContainerName: 'container'
               backendAzureRmKey: 'terraform.tfstate'
 
-          
-
-  - stage: Planning
-    displayName: Terraform Plan
-    jobs:
-      - job: Plan
-        displayName: Terraform Plan
-        steps:
-          - task: TerraformTask@5
+          - task: PublishPipelineArtifact@1
             inputs:
-              provider: 'azurerm'
-              command: 'init'
-              backendServiceArm: 'Connection-SVC'
-              backendAzureRmResourceGroupName: 'umbrella'
-              backendAzureRmStorageAccountName: 'itsisraningtoday2'
-              backendAzureRmContainerName: 'container'
-              backendAzureRmKey: 'terraform.tfstate'
-
-          - task: TerraformTask@5
-            inputs:
-              provider: 'azurerm'
-              command: 'plan'
-              environmentServiceNameAzureRM: 'Connection-SVC'
+              targetPath: '$(Pipeline.Workspace)'
+              artifact: 'Init'
+              publishLocation: 'pipeline'
 
 
-  - stage: Applying
-    displayName: Terraform Apply
-    jobs:
-      - job: Apply
-        displayName: Terraform Apply
-        steps:
-          - task: TerraformTask@5
-            inputs:
-              provider: 'azurerm'
-              command: 'init'
-              backendServiceArm: 'Connection-SVC'
-              backendAzureRmResourceGroupName: 'umbrella'
-              backendAzureRmStorageAccountName: 'itsisraningtoday2'
-              backendAzureRmContainerName: 'container'
-              backendAzureRmKey: 'terraform.tfstate'
-              
-          - task: TerraformTask@5
-            inputs:
-              provider: 'azurerm'
-              command: 'apply'
-              environmentServiceNameAzureRM: 'Connection-SVC'
+  # - stage: Planning
+  #   displayName: Terraform Plan
+  #   jobs:
+  #     - job: Plan
+  #       displayName: Terraform Plan
+  #       steps:
+  #         - task: DownloadPipelineArtifact@2
+  #           inputs:
+  #             buildType: 'current'
+  #             artifactName: 'Init'
+  #             targetPath: '$(Pipeline.Workspace)'
+
+  #         - task: TerraformTask@5
+  #           inputs:
+  #             provider: 'azurerm'
+  #             command: 'plan'
+  #             environmentServiceNameAzureRM: 'Connection-SVC'
+
+
+  # - stage: Applying
+  #   displayName: Terraform Apply
+  #   jobs:
+  #     - job: Apply
+  #       displayName: Terraform Apply
+  #       steps:
+  #         - task: TerraformTask@5
+  #           inputs:
+  #             provider: 'azurerm'
+  #             command: 'apply'
+  #             environmentServiceNameAzureRM: 'Connection-SVC'
