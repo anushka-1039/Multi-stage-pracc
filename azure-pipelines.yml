@@ -1,10 +1,10 @@
 trigger: none
 pool: ADO-agent
 stages:
-  - stage: Terraform Pipeline
+  - stage: Pipeline
     displayName: Terraform Init
     jobs:
-      - job: Init Job
+      - job: Init
         displayName: Init
         steps:
           - task: TerraformTask@5
